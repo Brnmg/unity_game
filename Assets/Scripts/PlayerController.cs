@@ -10,10 +10,8 @@ public class PlayerController : MonoBehaviour
 
     // Player's physics 
     private float moveSpeed;
-    private float moveHorizontal;
     private float moveVertical;
 
-    // Start is called before the first frame update
     private void Start()
     {
         // Get the player's (gameObject) RigidBody2D values
@@ -21,20 +19,12 @@ public class PlayerController : MonoBehaviour
         moveSpeed = .05f;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        moveHorizontal = joystick.Horizontal;
-        moveVertical = joystick.Vertical;
     }
 
     private void FixedUpdate()
     {
-        if (moveHorizontal > 0.1f || moveHorizontal < -0.1f)
-        {
-            GetComponent<SpriteRenderer>().sprite = shipIdle;
-            rb2D.AddForce(new Vector2(moveHorizontal * moveSpeed, 0), ForceMode2D.Impulse);
-        }
         if (moveVertical > 0.1f)
         {
             GetComponent<SpriteRenderer>().sprite = shipUp;
@@ -45,5 +35,13 @@ public class PlayerController : MonoBehaviour
             GetComponent<SpriteRenderer>().sprite = shipDown;
             rb2D.AddForce(new Vector2(0, moveVertical * moveSpeed), ForceMode2D.Impulse);
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Scoring")
+        {
+            FindObjectOfType<GameManager>().IncreaseScore();
+        }        
     }
 }

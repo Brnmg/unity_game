@@ -142,3 +142,6 @@ PackageBackups/
 
 # UWP builds
 /UWP/*
+
+# omnisharp config
+omnisharp.json
