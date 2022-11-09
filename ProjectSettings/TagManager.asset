@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Scoring
+  - Limiter
   layers:
   - Default
   - TransparentFX

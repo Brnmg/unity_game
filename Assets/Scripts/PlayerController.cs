@@ -21,6 +21,13 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    private void OnEnable()
+    {
+        Vector3 position = transform.position;
+        position.y = 0f;
+        transform.position = position;
+    }
+
     private void FixedUpdate()
     {
         if (Input.GetKey(KeyCode.Space))
@@ -40,6 +47,11 @@ public class PlayerController : MonoBehaviour
         {
             FindObjectOfType<GameManager>().IncreaseScore();
             Destroy(collision.gameObject);
-        }        
+        }
+        else if (collision.gameObject.tag == "Limiter") 
+        {
+            rb2D.velocity = Vector3.zero;
+            FindObjectOfType<GameManager>().GameOver();
+        }
     }
 }

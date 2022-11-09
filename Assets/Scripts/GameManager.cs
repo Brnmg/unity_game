@@ -8,10 +8,13 @@ public class GameManager : MonoBehaviour
     public TMP_Text scoreText;
     public GameObject playButton;
     public GameObject gameOver;
+    public GameObject panel;
     private int score;
 
     public void Awake()
     {
+        gameOver.SetActive(false);
+        panel.SetActive(false);
         Pause();
         Application.targetFrameRate = 60;
     }
@@ -23,6 +26,7 @@ public class GameManager : MonoBehaviour
 
         playButton.SetActive(false);
         gameOver.SetActive(false);
+        panel.SetActive(false);
 
         Time.timeScale = 1f;
         player.enabled = true;
@@ -45,6 +49,7 @@ public class GameManager : MonoBehaviour
     {
         gameOver.SetActive(true);
         playButton.SetActive(true);
+        panel.SetActive(true);
 
         Pause();
     }
