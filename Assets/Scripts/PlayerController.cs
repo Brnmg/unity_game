@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb2D;
 
     // Player's physics 
-    public float strength = .1f;
+    public float strength;
 
     private void Start()
     {
@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (Input.GetKey(KeyCode.Space))
+        if (strength > 0)
         {
             GetComponent<SpriteRenderer>().sprite = shipUp;
             rb2D.AddForce(new Vector2(0, strength), ForceMode2D.Impulse);
