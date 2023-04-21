@@ -15,17 +15,18 @@ public class BTManagerRespirometer : MonoBehaviour
 
         try
         {
+            BluetoothHelper.BLE = false;
             helper = BluetoothHelper.GetInstance(deviceName);
             helper.OnConnected += Onconnected;
             helper.OnConnectionFailed += OnConnFailed;
+            helper.OnDataReceived += OnMessageReceived;
 
-            helper.setTerminatorBasedStream(";"); //verificar se isso é necessário
+            helper.setTerminatorBasedStream(";");
 
             if (helper.isDevicePaired())
             {
                 helper.Connect();
             }
-
         }
         catch (Exception e)
         {
@@ -42,28 +43,24 @@ public class BTManagerRespirometer : MonoBehaviour
     private void Onconnected(BluetoothHelper helper)
     {
         helper.StartListening();
+        FindObjectOfType<Toast>().ShowToast();
         Debug.Log("connected");
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+    void OnMessageReceived(BluetoothHelper helper)
     {
-        if (helper != null)
+        float msg = float.Parse(helper.Read());
+
+
+        if (msg > 0)
         {
-            if (helper.Available)
-            {
-                float msg = float.Parse(helper.Read());
-
-                if (msg != 0)
-                {
-                    volArray.Add(msg);
-                }
-
-                msg *= 0.001f;
-                Debug.Log(Math.Abs(msg));
-                FindObjectOfType<PlayerController>().strength = Math.Abs(msg);
-            }
+            msg /= 20;
+            volArray.Add(msg);
         }
+
+        msg *= 20;
+        msg *= 0.001f;
+        FindObjectOfType<PlayerController>().strength = Math.Abs(msg);
     }
 
     private void OnDestroy()
